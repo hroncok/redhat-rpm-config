@@ -6,10 +6,10 @@
 
 Summary: Red Hat specific rpm configuration files
 Name: redhat-rpm-config
-Version: 133
-Release: 2%{?dist}
-# No version specified.
-License: GPL+
+Version: 134
+Release: 1%{?dist}
+# Originally no version specified, but stuff from rpm is version 2+
+License: GPLv2+
 URL: https://src.fedoraproject.org/rpms/redhat-rpm-config
 
 # Core rpm settings
@@ -47,6 +47,10 @@ Source155: macros.fedora-misc
 # added a python -> python2 conversion for fedora with warning
 # and an echo when the mangling happens
 Source201: brp-mangle-shebangs
+
+# this comes from rpm itself
+# however, now we can do Fedora changes within
+Source202: brp-python-bytecompile
 
 # Dependency generator scripts (deprecated)
 Source300: find-provides
@@ -95,7 +99,8 @@ Requires: nim-srpm-macros
 Requires: ocaml-srpm-macros
 Requires: openblas-srpm-macros
 Requires: perl-srpm-macros
-Requires: python-srpm-macros
+# TODO check version when putting this into fedora!
+Requires: python-srpm-macros >= 43
 Requires: rust-srpm-macros
 Requires: qt5-srpm-macros
 
@@ -202,6 +207,9 @@ install -p -m 644 -t %{buildroot}%{_rpmluadir}/fedora/srpm forge.lua
 %{_rpmconfigdir}/macros.d/macros.kmp
 
 %changelog
+* Mon Jul 01 2019 Miro Hrončok <mhroncok@redhat.com> - 134-1
+- Move brp-python-bytecompile from rpm, so we can easily adapt it
+
 * Thu Jun 27 2019 Vít Ondruch <vondruch@redhat.com> - 133-2
 - Enable RPM to set SOURCE_DATE_EPOCH environment variable.
 
